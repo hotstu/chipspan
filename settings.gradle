@@ -1,0 +1,3 @@
+rootProject.name='chipspan'
+include ':app'
+include ':chipspan'
