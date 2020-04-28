@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             bind:chipText="@{viewModel.fruits}"
+            bind:chipRes="@{viewModel.action}"
             bind:movementMethod="@{viewModel.movementMethod}"
             />
         <LinearLayout
@@ -47,7 +48,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             bind:chipText="@{viewModel.chips}"
-            bind:movementMethod="@{viewModel.movementMethod}"
+            bind:chipRes="@{viewModel.entry}"
+            bind:movementMethod="@{viewModel.removeMethod}"
             />
 
     </LinearLayout>

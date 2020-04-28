@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.XmlRes;
 import androidx.databinding.BindingAdapter;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,13 +18,14 @@ import java.util.List;
  * @since 4/23/20
  */
 public class ChipSpanBindings {
-    @BindingAdapter("bind:chipText")
-    public static void bindChipText(TextView v, String[] texts) {
-        bindChipText(v, Arrays.asList(texts));
-    }
 
     @BindingAdapter("bind:chipText")
     public static void bindChipText(TextView v, List<String> texts) {
+        bindChipText(v, texts, R.xml.standalone_chip_action);
+    }
+
+    @BindingAdapter(value = {"bind:chipText", "bind:chipRes"}, requireAll = true)
+    public static void bindChipText(TextView v, List<String> texts, @XmlRes int res) {
         if (texts == null || texts.size() == 0) {
             v.setText(null);
             return;
@@ -32,7 +33,7 @@ public class ChipSpanBindings {
         SpannableStringBuilder sb = new SpannableStringBuilder();
         for (String text : texts) {
             sb.append(text).append(" ");
-            sb.setSpan(new ChipSpan(v.getContext(), text), sb.length() - (text.length() + 1), sb.length() - 1,
+            sb.setSpan(new ChipSpan(v.getContext(), text, res), sb.length() - (text.length() + 1), sb.length() - 1,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             sb.setSpan(new ClickableSpan() {
                            @Override
