@@ -27,7 +27,7 @@ public class MainViewModel extends ViewModel {
     public final int entry = R.xml.standalone_chip_entry;
 
     public MainViewModel() {
-        this.chips.addAll(Arrays.asList("伦敦", "巴黎", "上海", "东京", "斯德哥尔摩", "纽约", "打工？",
+        this.chips.addAll(Arrays.asList("伦敦", "巴黎", "上海", "东京", "斯德哥尔摩", "纽约",
                 "╭︿︿︿╮{/ ·· /} ( (00) )   ︶︶︶ ", ""));
         movementMethod.setOnClickListener((tv, span) -> {
             Log.d("movementMethod", "" + span.getText());
