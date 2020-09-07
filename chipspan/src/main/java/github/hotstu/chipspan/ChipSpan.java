@@ -5,7 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.text.Layout;
+import android.text.Spannable;
 import android.text.style.DynamicDrawableSpan;
+import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -134,4 +138,61 @@ public class ChipSpan extends DynamicDrawableSpan implements IChip{
         b.draw(canvas);
         canvas.restore();
     }
+
+    public void getLocationOnScreen(TextView widget) {
+
+        TextView parentTextView = (TextView) widget;
+
+        Rect parentTextViewRect = new Rect();
+
+        // Initialize values for the computing of clickedText position
+        Spannable completeText = (Spannable)(parentTextView).getText();
+        Layout textViewLayout = parentTextView.getLayout();
+
+        int startOffsetOfClickedText = completeText.getSpanStart(this);
+        int endOffsetOfClickedText = completeText.getSpanEnd(this);
+        float startXCoordinatesOfClickedText = textViewLayout.getPrimaryHorizontal((int)startOffsetOfClickedText);
+        float endXCoordinatesOfClickedText = textViewLayout.getPrimaryHorizontal((int)endOffsetOfClickedText);
+
+
+        // Get the rectangle of the clicked text
+        int currentLineStartOffset = textViewLayout.getLineForOffset((int)startOffsetOfClickedText);
+        int currentLineEndOffset = textViewLayout.getLineForOffset((int)endOffsetOfClickedText);
+        boolean keywordIsInMultiLine = currentLineStartOffset != currentLineEndOffset;
+        textViewLayout.getLineBounds(currentLineStartOffset, parentTextViewRect);
+
+
+        // Update the rectangle position to his real position on screen
+        int[] parentTextViewLocation = {0,0};
+        parentTextView.getLocationOnScreen(parentTextViewLocation);
+
+        float parentTextViewTopAndBottomOffset = (
+                parentTextViewLocation[1] -
+                        parentTextView.getScrollY() +
+                        parentTextView.getCompoundPaddingTop()
+        );
+        parentTextViewRect.top += parentTextViewTopAndBottomOffset;
+        parentTextViewRect.bottom += parentTextViewTopAndBottomOffset;
+
+        parentTextViewRect.left += (
+                parentTextViewLocation[0] +
+                        startXCoordinatesOfClickedText +
+                        parentTextView.getCompoundPaddingLeft() -
+                        parentTextView.getScrollX()
+        );
+        parentTextViewRect.right = (int) (
+                parentTextViewRect.left +
+                        endXCoordinatesOfClickedText -
+                        startXCoordinatesOfClickedText
+        );
+
+        int x = (parentTextViewRect.left + parentTextViewRect.right) / 2;
+        int y = parentTextViewRect.bottom;
+        if (keywordIsInMultiLine) {
+            x = parentTextViewRect.left;
+        }
+
+        Log.d("location2",   x + "," + y);
+    }
+
 }

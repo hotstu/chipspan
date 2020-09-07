@@ -52,5 +52,14 @@
             bind:movementMethod="@{viewModel.removeMethod}"
             />
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            bind:chipText="@{viewModel.editChips}"
+            bind:chipRes="@{viewModel.entry}"
+            bind:movementMethod="@{viewModel.removeMethod}"
+            />
+
+
     </LinearLayout>
 </layout>

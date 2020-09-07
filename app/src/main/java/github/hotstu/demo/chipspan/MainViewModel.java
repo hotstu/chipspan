@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import github.hotstu.chipspan.ChipMovementMethod;
+import github.hotstu.chipspan.ChipSpan;
 
 /**
  * @author hglf [hglf](https://github.com/hotstu)
@@ -20,6 +21,7 @@ import github.hotstu.chipspan.ChipMovementMethod;
 public class MainViewModel extends ViewModel {
     public final List<String> fruits = Arrays.asList("Apple", "Banana", "Orange");
     public final ObservableArrayList<String> chips = new ObservableArrayList<>();
+    public final ObservableArrayList<String> editChips = new ObservableArrayList<>();
     public final ObservableField<String> userInput = new ObservableField<>();
     public final ChipMovementMethod movementMethod = ChipMovementMethod.newInstance();
     public final ChipMovementMethod removeMethod = ChipMovementMethod.newInstance();
@@ -27,14 +29,15 @@ public class MainViewModel extends ViewModel {
     public final int entry = R.xml.standalone_chip_entry;
 
     public MainViewModel() {
-        this.chips.addAll(Arrays.asList("伦敦", "巴黎", "上海", "东京", "斯德哥尔摩", "纽约",
-                "╭︿︿︿╮{/ ·· /} ( (00) )   ︶︶︶ ", ""));
+        this.chips.addAll(Arrays.asList("伦敦", "巴黎", "上海", "东京", "斯德哥尔摩", "纽约"));
+        this.editChips.addAll(Arrays.asList("Android", "iOS", "Java", "Node", "Flutter", "React","Vue"));
         movementMethod.setOnClickListener((tv, span) -> {
             Log.d("movementMethod", "" + span.getText());
             this.chips.add(span.getText());
             return true;
         });
         removeMethod.setOnClickListener((tv, span) -> {
+            ((ChipSpan) span).getLocationOnScreen(tv);
             String text = span.getText();
             remove(text);
             return true;
